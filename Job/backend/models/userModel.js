@@ -39,14 +39,9 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Skills are required'],
         trim: true,
     },
-    location: {
-        type: String,
-        required: [true, 'Location is required'],
-        trim: true,
-    },
     profilePic: {
         type: String,
-        default: null, // Stores base64 encoded image if provided
+        required:false, // Stores base64 encoded image if provided
     },
 }, {
     timestamps: true, // Automatically adds createdAt and updatedAt fields

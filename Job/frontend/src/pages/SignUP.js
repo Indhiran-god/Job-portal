@@ -15,7 +15,6 @@ const SignUp = () => {
     jobTitle: "",
     company: "",
     skills: "",
-    location: "",
     profilePic: "",
   });
 
@@ -48,9 +47,9 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { email, password, confirmPassword, name, jobTitle, company, skills, location } = data;
+    const { email, password, confirmPassword, name, jobTitle, company, skills} = data;
 
-    if (!email || !password || !confirmPassword || !name || !jobTitle || !company || !skills || !location) {
+    if (!email || !password || !confirmPassword || !name || !jobTitle || !company || !skills) {
       toast.error("All fields are required.");
       return;
     }
@@ -209,18 +208,7 @@ const SignUp = () => {
               />
             </div>
 
-            <div className='grid'>
-              <label className="text-gray-700">Location:</label>
-              <input
-                type='text'
-                name='location'
-                value={data.location}
-                onChange={handleOnChange}
-                required
-                className='w-full bg-gray-100 p-2 outline-none border border-gray-300'
-                placeholder='Your current location'
-              />
-            </div>
+          
 
             <button className='bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 rounded' type='submit'>
               Sign Up

@@ -1,6 +1,6 @@
 import React, { useEffect, createContext, useState } from 'react';
 import './App.css';
-import { Routes, Route, Outlet } from 'react-router-dom'; // Remove Router here
+import { Outlet } from 'react-router-dom'; // Remove Router here
 import { useDispatch, useSelector } from 'react-redux';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -8,8 +8,6 @@ import SummaryApi from './common';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setUserDetails } from './store/userSlice';
-import SubCategory from './components/SubCategory'; // Keep SubCategory import
-import ProductPage from './components/productpage'; // Correct import case for ProductPage
 
 // Create Context
 export const UserContext = createContext();
