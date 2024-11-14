@@ -1,27 +1,52 @@
-const express = require('express')
-const cors = require('cors')
-const cookieParser = require('cookie-parser')
-require('dotenv').config()
-const connectDB = require('./config/db')
-const router = require('./routes')
+// Import required modules
+const express = require('express');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+require('dotenv').config();
+const connectDB = require('./config/db');
+const router = require('./routes');
 
+const app = express();
 
-const app = express()
+// Define allowed origins
+const allowedOrigins = ['https://job-portal-9fxj.vercel.app'];
+
+// CORS configuration
 app.use(cors({
-    origin : process.env.FRONTEND_URL,
-    credentials : true
-}))
-app.use(express.json())
-app.use(cookieParser())
+    origin: allowedOrigins,  // Allow your frontend URL
+    credentials: true,       // Allow credentials like cookies
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+}));
 
-app.use("/api",router)
+// Middleware
+app.use(cookieParser());
+app.use(express.json());
 
-const PORT = 8080 || process.env.PORT
+// Set a response timeout
+app.use((req, res, next) => {
+    res.setTimeout(30000, () => {  // 30 seconds timeout
+        console.log('Request has timed out.');
+        res.sendStatus(408);  // Send a 408 Request Timeout status code
+    });
+    next();
+});
 
+// Handle CORS preflight requests across all routes
+app.options('*', cors());  // Preflight for all routes
 
-connectDB().then(()=>{
-    app.listen(PORT,()=>{
-        console.log("connnect to DB")
-        console.log("Server is running "+PORT)
-    })
-})
+// API Routes
+app.use("/api", router);
+
+// Set port for Vercel environment
+const PORT = process.env.PORT || 8080; // Use PORT from environment variable or default to 8080
+
+// Start server and connect to DB
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log("Connected to DB");
+        console.log(`Server is running on port ${PORT}`);
+    });
+}).catch(err => {
+    console.error("Database connection failed:", err.message);
+});
