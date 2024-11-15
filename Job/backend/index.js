@@ -11,31 +11,33 @@ const app = express();
 
 // Define allowed origins
 const allowedOrigins = [
-    'https://job-portal-9fxj.vercel.app',
-    
+    'https://job-portal-9fxj.vercel.app', // Add more origins if needed
 ];
 
 // CORS configuration
 app.use(cors({
     origin: allowedOrigins,
-    credentials: true,
+    credentials: true, // Allow cookies and other credentials
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }));
 
 // Middleware
 app.use(cookieParser());
 app.use(express.json());
 app.use(timeout('30s')); // Set a timeout for requests
+
+// Handle timeout responses
 app.use((req, res, next) => {
-    if (!req.timedout) next();
+    if (req.timedout) {
+        console.log('Request timed out');
+        return res.status(408).send('Request Timeout');
+    }
+    next();
 });
 
 // API Routes
 app.use("/api", router);
-
-// Handle CORS preflight requests
-app.options('*', cors());
 
 // Set port for Vercel environment
 const PORT = process.env.PORT || 8080;
@@ -52,3 +54,4 @@ connectDB()
         console.error("Database connection failed:", err.message);
         process.exit(1); // Exit on critical failure
     });
+
