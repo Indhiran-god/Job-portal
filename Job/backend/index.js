@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const timeout = require('connect-timeout');
 require('dotenv').config();
 const connectDB = require('./config/db');
+
 const router = require('./routes');
 
 const app = express();
