@@ -12,7 +12,7 @@ const app = express();
 // Define allowed origins
 const allowedOrigins = [
     'https://job-portal-9fxj.vercel.app',
-    'http://localhost:3000'
+    
 ];
 
 // CORS configuration
